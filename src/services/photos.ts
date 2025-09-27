@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { Photo } from "../types/photo";
 
 const API_KEY = "563492ad6f9170000100000108dc2880626e4436b3634ce1cf6b4d74";
 axios.defaults.baseURL = "https://api.pexels.com/v1/";
@@ -7,8 +8,18 @@ axios.defaults.params = {
   orientation: "landscape",
 };
 
-export const getPhotos = async (query) => {
-  const response = await axios.get(`search?query=${query}`);
+interface ResponseData {
+  photos: Photo[];
+}
+
+export const getPhotos = async (query: string): Promise<Photo[]> => {
+  const response = await axios.get<ResponseData>(`search?query=${query}`);
 
   return response.data.photos;
 };
+
+// export const getPhotoById = async (id: number) => {
+//   const response = await axios.get(`https://api.pexels.com/v1/photo/${id}`);
+
+//   return response.data;
+// };
