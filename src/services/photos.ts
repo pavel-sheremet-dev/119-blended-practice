@@ -17,9 +17,3 @@ export const getPhotos = async (query: string): Promise<Photo[]> => {
 
   return response.data.photos;
 };
-
-// export const getPhotoById = async (id: number) => {
-//   const response = await axios.get(`https://api.pexels.com/v1/photo/${id}`);
-
-//   return response.data;
-// };

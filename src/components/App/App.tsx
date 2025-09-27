@@ -3,17 +3,21 @@ import Container from "../Container/Container";
 import type { Photo } from "../../types/photo";
 import { getPhotos } from "../../services/photos";
 import { useState } from "react";
+import Modal from "../Modal/Modal";
+import { Form } from "../SearchForm/SearchForm";
+import { GalleryList } from "../GalleryList/GalleryList";
+import Loader from "../Loader/Loader";
 
 export default function App() {
   const [images, setImages] = useState<Photo[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-
-  // images - App
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<null | Photo>(null);
 
   // 1. get query from Form
   // 2. http request
-  // 3. set images to state
+  // 3. add images state and set images results to state
   // 4. pass images to Gallery List
 
   const getQuery = async (query: string) => {
@@ -29,6 +33,16 @@ export default function App() {
     }
   };
 
+  const openModal = (image: Photo) => {
+    setIsModalOpen(true);
+    setModalData(image);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalData(null);
+  };
+
   return (
     <>
       <Section>
@@ -41,55 +55,12 @@ export default function App() {
           {isError && <div>Some error! Try again later</div>}
 
           {/* GALLERY LIST */}
-          <GalleryList images={images} />
+          <GalleryList images={images} onImageClick={openModal} />
+          {isModalOpen && modalData && (
+            <Modal onClose={closeModal} data={modalData} />
+          )}
         </Container>
       </Section>
     </>
   );
 }
-
-interface FormProps {
-  onSubmit: (query: string) => void;
-}
-
-const Form = ({ onSubmit }: FormProps) => {
-  const handleSubmit = (formData: FormData) => {
-    const query = formData.get("query") as string;
-
-    onSubmit(query);
-  };
-
-  return (
-    <form action={handleSubmit}>
-      <input type="text" name="query" />
-      <button type="submit">Submit</button>
-    </form>
-  );
-};
-
-interface GalleryListProps {
-  images: Photo[];
-}
-
-// 2. Gallery list
-const GalleryList = ({ images }: GalleryListProps) => {
-  return (
-    <ul>
-      {images.map((image) => {
-        return (
-          <li key={image.id}>
-            <img src={image.src.large} alt={image.alt} width={150} />
-          </li>
-        );
-      })}
-    </ul>
-  );
-};
-
-// 3. Loader
-//  компонент заглушка
-const Loader = () => {
-  return <div>Loading...</div>;
-};
-
-// викликати компоненти в App
