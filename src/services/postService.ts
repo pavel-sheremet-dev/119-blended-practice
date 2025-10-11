@@ -1,11 +1,44 @@
 import axios from "axios";
+import { Post, PostFormData } from "../types/post";
 
-axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
+const PER_PAGE = 12;
 
-export const fetchPosts = async (searchText, page) => {};
+const api = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com",
+  headers: {
+    Authorization: `Bearer TOKEN`,
+  },
+});
 
-export const createPost = async (newPost) => {};
+interface ResponseData {
+  posts: Post[];
+  totalPages: number;
+}
 
-export const editPost = async (newDataPost) => {};
+export const fetchPosts = async (searchText: string, page: number): Promise<ResponseData> => {
+  const { data, headers } = await api.get<Post[]>("/posts", {
+    params: {
+      q: searchText,
+      _page: page,
+      _limit: PER_PAGE,
+    },
+  });
 
-export const deletePost = async (postId) => {};
+  const totalCount = Number(headers["x-total-count"]);
+  return { posts: data, totalPages: Math.ceil(totalCount / PER_PAGE) };
+};
+
+export const createPost = async (newPost: PostFormData) => {
+  const { data } = await api.post<Post>("/posts", newPost);
+  return data;
+};
+
+export const editPost = async (id: Post["id"], values: PostFormData) => {
+  const { data } = await api.patch<Post>(`/posts/${id}`, values);
+  return data;
+};
+
+export const deletePost = async (postId: Post["id"]) => {
+  const { data } = await api.delete<Post>(`/posts/${postId}`);
+  return data;
+};
