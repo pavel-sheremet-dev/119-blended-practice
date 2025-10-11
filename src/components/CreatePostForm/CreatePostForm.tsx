@@ -19,7 +19,6 @@ export default function CreatePostForm({ onClose }: CreatePostFormProps) {
   const queryQuery = useQueryClient();
 
   const mutation = useMutation({
-    mutationKey: ["post"],
     mutationFn: createPost,
     onSuccess: () => {
       queryQuery.invalidateQueries({

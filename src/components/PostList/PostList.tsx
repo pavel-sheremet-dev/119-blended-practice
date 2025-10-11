@@ -18,7 +18,6 @@ export default function PostList({ posts, onSelectPost }: PostListProps) {
   const queryClient = useQueryClient();
 
   const mutaion = useMutation({
-    mutationKey: ["post"],
     mutationFn: deletePost,
     // mutationFn: (id: Post["id"]) => deletePost(id),
     onSuccess: () => {

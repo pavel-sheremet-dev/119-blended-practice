@@ -20,7 +20,6 @@ export default function EditPostForm({ post, onClose }: EditPostFormProps) {
   const queryQuery = useQueryClient();
 
   const mutation = useMutation({
-    mutationKey: ["post"],
     mutationFn: (values: PostFormData) => editPost(post.id, values),
     onSuccess: () => {
       queryQuery.invalidateQueries({
