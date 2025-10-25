@@ -6,15 +6,17 @@ axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
 
 export type FetchPostsResponse = Post[];
 
+interface FetchPostsParams {
+  searchText: string;
+  page: number;
+  userId?: string;
+}
+
 export const fetchPosts = async ({
   searchText,
   page,
   userId,
-}: {
-  searchText: string;
-  page: number;
-  userId?: string;
-}): Promise<{ posts: Post[]; totalCount: number }> => {
+}: FetchPostsParams): Promise<{ posts: Post[]; totalCount: number }> => {
   const response = await axios.get<FetchPostsResponse>('/posts', {
     params: {
       userId,
@@ -53,8 +55,23 @@ export const deletePost = async (postId: number) => {
   return response.data;
 };
 
-export const fetchPostById = async () => {};
+export const fetchUserById = async (userId: number) => {
+  const { data } = await axios.get<User>(`/users/${userId}`);
+  return data;
+};
 
-export const fetchUsers = async () => {};
+export const fetchPostById = async (postId: string) => {
+  const { data } = await axios.get<Post>(`/posts/${postId}`);
 
-export const fetchUserById = async () => {};
+  const user = await fetchUserById(data.userId);
+
+  return {
+    ...data,
+    user,
+  };
+};
+
+export const fetchUsers = async () => {
+  const { data } = await axios.get<User[]>('/users');
+  return data;
+};

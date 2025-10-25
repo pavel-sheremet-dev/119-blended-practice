@@ -10,6 +10,7 @@ export default function Header() {
         <Link href="/" aria-label="Home" className={css.headerLink}>
           Postly
         </Link>
+        <Link href="/test">test</Link>
         <nav aria-label="Main Navigation">
           <ul className={css.navigation}>
             <li className={css.navigationItem}>

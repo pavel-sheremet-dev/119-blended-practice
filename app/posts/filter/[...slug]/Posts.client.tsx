@@ -15,11 +15,10 @@ import EditPostForm from '@/components/EditPostForm/EditPostForm';
 import CreatePostForm from '@/components/CreatePostForm/CreatePostForm';
 
 interface PostsClientProps {
-  initialData: { posts: Post[]; totalCount: number };
   userId: string;
 }
 
-export default function PostsClient({ initialData, userId }: PostsClientProps) {
+export default function PostsClient({ userId }: PostsClientProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,7 +33,7 @@ export default function PostsClient({ initialData, userId }: PostsClientProps) {
         ...(userId !== 'All' && { userId }),
       }),
     placeholderData: keepPreviousData,
-    initialData,
+    refetchOnMount: false,
   });
 
   const toggleModal = () => setIsModalOpen((prev) => !prev);
@@ -49,7 +48,8 @@ export default function PostsClient({ initialData, userId }: PostsClientProps) {
     setSearchQuery(newQuery);
   }, 300);
 
-  const totalPages = Math.ceil(data.totalCount / 8);
+  const totalCount = data === undefined ? 0 : data.totalCount;
+  const totalPages = Math.ceil(totalCount / 8);
   const posts = data?.posts ?? [];
 
   return (

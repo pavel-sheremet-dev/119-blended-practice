@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import css from './UsersMenu.module.css';
 import Link from 'next/link';
 import DropdownPortal from '@/components/DropdownPortal/DropdownPortal';
-import { fetchUsers } from '@/lib/api';
 import { User } from '@/types/user';
 import { useQuery } from '@tanstack/react-query';
+import { fetchUsers } from '@/lib/api';
 
 export default function UsersMenu() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
