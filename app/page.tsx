@@ -1,6 +1,14 @@
+import { QueryClient } from '@tanstack/react-query';
 import css from './page.module.css';
 
 export default function Home() {
+  const cq = new QueryClient();
+
+  cq.fetchQuery({
+    queryKey: [],
+    queryFn: () => {},
+  });
+
   return (
     <main className={css.main}>
       <div className={css.container}>

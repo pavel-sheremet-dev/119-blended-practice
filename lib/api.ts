@@ -24,6 +24,7 @@ export const fetchPosts = async ({
     },
   });
   const totalCount = Number(response.headers['x-total-count']);
+  console.log(totalCount);
   return { posts: response.data, totalCount };
 };
 
@@ -53,8 +54,17 @@ export const deletePost = async (postId: number) => {
   return response.data;
 };
 
-export const fetchPostById = async () => {};
+export const fetchPostById = async (postId: string) => {
+  const response = await axios.get<Post>(`/posts/${postId}`);
+  return response.data;
+};
 
-export const fetchUsers = async () => {};
+export const fetchUsers = async () => {
+  const response = await axios.get<User[]>('/users');
+  return response.data;
+};
 
-export const fetchUserById = async () => {};
+export const fetchUserById = async (userId: number) => {
+  const response = await axios.get<User>(`/users/${userId}`);
+  return response.data;
+};

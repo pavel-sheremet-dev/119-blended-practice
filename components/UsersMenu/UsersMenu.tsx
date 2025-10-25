@@ -14,7 +14,7 @@ export default function UsersMenu() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
 
-  const { data: users } = useQuery<User[]>({
+  const { data: users = [] } = useQuery<User[]>({
     queryKey: ['users'],
     queryFn: fetchUsers,
   });
@@ -76,7 +76,7 @@ export default function UsersMenu() {
             }}
           >
             <li className={css.menuItem}>
-              <Link href={`/posts/filter/All`} className={css.menuLink}>
+              <Link href={`/posts/filter/All`} prefetch className={css.menuLink}>
                 All users
               </Link>
             </li>
