@@ -7,7 +7,12 @@ const api = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com",
 });
 
-export const fetchPosts = async (searchText: string, page: number) => {
+interface FetchPostData {
+  posts: Post[];
+  total_pages: number;
+}
+
+export const fetchPosts = async (searchText: string, page: number): Promise<FetchPostData> => {
   const { data, headers } = await api.get<Post[]>("/posts", {
     params: {
       q: searchText,
